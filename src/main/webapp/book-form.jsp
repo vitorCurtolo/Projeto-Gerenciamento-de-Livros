@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <html>
 <head>
 <title>Book Management Application</title>
@@ -15,7 +15,8 @@
 		<nav class="navbar navbar-expand-md navbar-dark"
 			style="background-color: tomato">
 			<div>
-				<a href="https://www.javaguides.net" class="navbar-brand"> Book Management App </a>
+				<a href="https://www.javaguides.net" class="navbar-brand"> Book
+					Management App </a>
 			</div>
 
 			<ul class="navbar-nav">
@@ -51,22 +52,36 @@
 				</c:if>
 
 				<fieldset class="form-group">
-					<label>Book Name</label> <input type="text"
+					<label>Nome</label> <input type="text"
 						value="<c:out value='${book.name}' />" class="form-control"
 						name="name" required="required">
 				</fieldset>
 
 				<fieldset class="form-group">
-					<label>Book Email</label> <input type="text"
-						value="<c:out value='${book.email}' />" class="form-control"
-						name="email">
+					<label>Autor</label> <input type="text"
+						value="<c:out value='${book.autor}' />" class="form-control"
+						name="autor">
 				</fieldset>
 
 				<fieldset class="form-group">
-					<label>Book Country</label> <input type="text"
-						value="<c:out value='${book.country}' />" class="form-control"
-						name="country">
+					<label>ISBN</label> <input type="text"
+						value="<c:out value='${book.isbn}' />" class="form-control"
+						name="isbn">
 				</fieldset>
+
+				<fieldset class="form-group">
+					<label>Páginas</label> <input type="text"
+						value="<c:out value='${book.nmrPaginas}' />" class="form-control"
+						name="nmrPaginas">
+				</fieldset>
+
+				<fieldset class="form-group">
+					<label>Capa</label> <input type="text"
+						value="<c:out value='${book.capa}' />" class="form-control"
+						name="capa">
+				</fieldset>
+
+
 
 				<button type="submit" class="btn btn-success">Save</button>
 				</form>

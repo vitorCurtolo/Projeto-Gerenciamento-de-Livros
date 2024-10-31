@@ -44,9 +44,10 @@
 					<tr>
 						<th>ID</th>
 						<th>Name</th>
-						<th>Email</th>
-						<th>Country</th>
-						<th>Actions</th>
+						<th>Autor</th>
+						<th>Páginas</th>
+						<th>ISBN</th>
+						<th>Capa</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -56,8 +57,10 @@
 						<tr>
 							<td><c:out value="${book.id}" /></td>
 							<td><c:out value="${book.name}" /></td>
-							<td><c:out value="${book.email}" /></td>
-							<td><c:out value="${book.country}" /></td>
+							<td><c:out value="${book.autor}" /></td>
+							<td><c:out value="${book.nmrPaginas}" /></td>
+								<td><c:out value="${book.isbn}" /></td>
+							<td><c:out value="${book.capa}" /></td>
 							<td><a href="edit?id=<c:out value='${book.id}' />">Edit</a>
 								&nbsp;&nbsp;&nbsp;&nbsp; <a
 								href="delete?id=<c:out value='${book.id}' />">Delete</a></td>

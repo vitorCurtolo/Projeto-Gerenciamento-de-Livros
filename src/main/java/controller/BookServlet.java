@@ -85,10 +85,13 @@ public class BookServlet extends HttpServlet {
 
 	private void insertBook(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
+		
 		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String country = request.getParameter("country");
-		Book newBook = new Book(name, email, country);
+		String autor = request.getParameter("autor");
+		int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
+		int isbn = Integer.parseInt(request.getParameter("isbn"));
+		String capa = request.getParameter("capa");
+		Book newBook = new Book(name, autor, nmrPaginas, isbn, capa);
 		bookDAO.insertBook(newBook);
 		response.sendRedirect("list");
 	}
@@ -97,10 +100,12 @@ public class BookServlet extends HttpServlet {
 			throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String name = request.getParameter("name");
-		String email = request.getParameter("email");
-		String country = request.getParameter("country");
+		String autor = request.getParameter("autor");
+		int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
+		int isbn = Integer.parseInt(request.getParameter("isbn"));
+		String capa = request.getParameter("capa");
 
-		Book book = new Book(id, name, email, country);
+		Book book = new Book(id,name, autor, nmrPaginas, isbn, capa);
 		bookDAO.updateBook(book);
 		response.sendRedirect("list");
 	}
