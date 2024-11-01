@@ -1,12 +1,20 @@
 package model;
 
 public class Book {
+	
+	public int id;
+	public String name;
+	public String autor;
+	public int nmrPaginas;
+	public Double isbn;
+	public boolean isDeleted;
+	public String capa;
 
 
 	public Book() {
 	}
 
-	public Book(String name, String autor, int nmr_paginas, int isbn, String capa) {
+	public Book(String name, String autor, int nmr_paginas, Double isbn, String capa) {
 		super();
 		this.name = name;
 		this.autor = autor;
@@ -15,7 +23,7 @@ public class Book {
 		this.capa = capa;
 	}
 	
-	public Book(int id, String name, String autor, int nmr_paginas, int isbn, String capa) {
+	public Book(int id, String name, String autor, int nmr_paginas, Double isbn, String capa) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -57,11 +65,11 @@ public class Book {
 		this.nmrPaginas = nmrPaginas;
 	}
 
-	public int getIsbn() {
+	public Double getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(int isbn) {
+	public void setIsbn(Double isbn) {
 		this.isbn = isbn;
 	}
 
@@ -80,14 +88,6 @@ public class Book {
 	public void setCapa(String capa) {
 		this.capa = capa;
 	}
-
-	public int id;
-	public String name;
-	public String autor;
-	public int nmrPaginas;
-	public int isbn;
-	public boolean isDeleted;
-	public String capa;
 
 
 }

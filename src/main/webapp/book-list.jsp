@@ -8,7 +8,9 @@
 	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
 	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
 	crossorigin="anonymous">
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">
+<link
+	href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"
+	rel="stylesheet">
 
 <script>
 	function toggleView(view) {
@@ -45,6 +47,17 @@
 			</ul>
 		</nav>
 	</header>
+
+	<c:if test="${not empty sessionScope.message}">
+		<div id="successMessage" class="alert alert-success">${sessionScope.message}</div>
+		<c:remove var="message" scope="session" />
+	</c:if>
+
+	<c:if test="${not empty sessionScope.error}">
+		<div id="errorMessage" class="alert alert-danger">${sessionScope.error}</div>
+		<c:remove var="error" scope="session" />
+	</c:if>
+
 	<br>
 
 	<div class="container">
@@ -102,8 +115,9 @@
 							<td><a href="edit?id=<c:out value='${book.id}' />"> <span
 									class="material-icons-outlined">edit</span>
 							</a></td>
-							<td><a href="delete?id=<c:out value='${book.id}' />"> <span
-									class="material-icons-outlined">delete</span>
+							<td><a href="delete?id=<c:out value='${book.id}' />"
+								onclick="return confirm('Tem certeza que deseja deletar este livro?');">
+									<span class="material-icons-outlined">delete</span>
 							</a></td>
 						</tr>
 					</c:forEach>
@@ -139,5 +153,30 @@
 		</div>
 
 	</div>
+
+
+	<script>
+		// Função para ocultar mensagens após alguns segundos
+		function hideMessages() {
+			var successMessage = document.getElementById('successMessage');
+			var errorMessage = document.getElementById('errorMessage');
+
+			if (successMessage) {
+				setTimeout(function() {
+					successMessage.style.display = 'none';
+				}, 5000); // Oculta após 5 segundos
+			}
+
+			if (errorMessage) {
+				setTimeout(function() {
+					errorMessage.style.display = 'none';
+				}, 5000); // Oculta após 5 segundos
+			}
+		}
+
+		// Chama a função após o carregamento da página
+		window.onload = hideMessages;
+	</script>
+
 </body>
 </html>

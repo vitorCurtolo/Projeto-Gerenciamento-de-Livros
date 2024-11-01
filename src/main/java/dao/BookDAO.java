@@ -15,6 +15,7 @@ import util.DatabaseQueries;
 public class BookDAO {
 
 	// TODO: Arrumar nomes da tabela, mix de ingles com pt.
+	// TODO: ISBN oficial tem 13 digitos. mudar para tipo string e varchar. Tipo Double(atual) só aceita 10 digitos
 	
 	private final Connection connection;
 
@@ -28,7 +29,7 @@ public class BookDAO {
 			preparedStatement.setString(1, book.getName());
 			preparedStatement.setString(2, book.getAutor());
 			preparedStatement.setInt(3, book.getNmrPaginas());
-			preparedStatement.setInt(4, book.getIsbn());
+			preparedStatement.setDouble(4, book.getIsbn());
 			preparedStatement.setString(5, book.getCapa());
 
 			preparedStatement.executeUpdate();
@@ -51,7 +52,7 @@ public class BookDAO {
 				String name = rs.getString("name");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
-				int isbn = rs.getInt("isbn");
+				Double isbn = rs.getDouble("isbn");
 				String capa = rs.getString("capa");
 				book = new Book(id, name, autor, paginas, isbn, capa);
 			}
@@ -75,7 +76,7 @@ public class BookDAO {
 				String name = rs.getString("name");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
-				int isbn = rs.getInt("isbn");
+				Double isbn = rs.getDouble("isbn");
 				String capa = rs.getString("capa");
 				books.add(new Book(id, name, autor, paginas, isbn, capa));
 			}
@@ -107,7 +108,7 @@ public class BookDAO {
 			preparedStatement.setString(1, book.getName());
 			preparedStatement.setString(2, book.getAutor());
 			preparedStatement.setInt(3, book.getNmrPaginas());
-			preparedStatement.setInt(4, book.getIsbn());
+			preparedStatement.setDouble(4, book.getIsbn());
 			preparedStatement.setString(5, book.getCapa());
 			preparedStatement.setInt(6, book.getId());
 
@@ -156,7 +157,7 @@ public class BookDAO {
 				String name = rs.getString("name");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
-				int isbn = rs.getInt("isbn");
+				Double isbn = rs.getDouble("isbn");
 				String capa = rs.getString("capa");
 				books.add(new Book(id, name, autor, paginas, isbn, capa));
 			}

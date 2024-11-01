@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Book;
 
 @WebServlet("/")
@@ -100,14 +101,26 @@ public class BookServlet extends HttpServlet {
 	private void insertBook(HttpServletRequest request, HttpServletResponse response) 
 			throws SQLException, IOException {
 		
-		String name = request.getParameter("name");
-		String autor = request.getParameter("autor");
-		int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
-		int isbn = Integer.parseInt(request.getParameter("isbn"));
-		String capa = request.getParameter("capa");
-		Book newBook = new Book(name, autor, nmrPaginas, isbn, capa);
-		bookDAO.insertBook(newBook);
-		response.sendRedirect("list");
+		 try {
+		        String name = request.getParameter("name");
+		        String autor = request.getParameter("autor");
+		        int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
+		        Double isbn = Double.parseDouble(request.getParameter("isbn"));
+		        String capa = request.getParameter("capa");
+		        Book newBook = new Book(name, autor, nmrPaginas, isbn, capa);
+		        
+		        bookDAO.insertBook(newBook);
+		        
+		        // Armazenando mensagem de sucesso na sessão
+		        HttpSession session = request.getSession();
+		        session.setAttribute("message", "Livro inserido com sucesso!");
+		    } catch (Exception e) {
+		        // Armazenando mensagem de erro na sessão
+		        HttpSession session = request.getSession();
+		        session.setAttribute("error", "Erro ao inserir livro: " + e.getMessage());
+		    }
+		    
+		    response.sendRedirect("list");
 	}
 
 	private void updateBook(HttpServletRequest request, HttpServletResponse response) 
@@ -116,7 +129,7 @@ public class BookServlet extends HttpServlet {
 		String name = request.getParameter("name");
 		String autor = request.getParameter("autor");
 		int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
-		int isbn = Integer.parseInt(request.getParameter("isbn"));
+		Double isbn = Double.parseDouble(request.getParameter("isbn"));
 		String capa = request.getParameter("capa");
 
 		Book book = new Book(id,name, autor, nmrPaginas, isbn, capa);

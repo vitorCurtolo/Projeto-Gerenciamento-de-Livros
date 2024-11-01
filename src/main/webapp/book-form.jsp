@@ -15,13 +15,12 @@
 		<nav class="navbar navbar-expand-md navbar-dark"
 			style="background-color: tomato">
 			<div>
-				<a href="https://www.javaguides.net" class="navbar-brand"> Book
-					Management App </a>
+				<a href="https://www.javaguides.net" class="navbar-brand"> Sistema de Gerenciamento de Livros </a>
 			</div>
 
 			<ul class="navbar-nav">
 				<li><a href="<%=request.getContextPath()%>/list"
-					class="nav-link">Books</a></li>
+					class="nav-link">Livros</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -39,10 +38,10 @@
 				<caption>
 					<h2>
 						<c:if test="${book != null}">
-            			Edit Book
+            			Editar Livro
             		</c:if>
 						<c:if test="${book == null}">
-            			Add New Book
+            			Adicionar Novo Livro
             		</c:if>
 					</h2>
 				</caption>
@@ -60,19 +59,19 @@
 				<fieldset class="form-group">
 					<label>Autor</label> <input type="text"
 						value="<c:out value='${book.autor}' />" class="form-control"
-						name="autor">
+						name="autor" required="required">
 				</fieldset>
 
 				<fieldset class="form-group">
-					<label>ISBN</label> <input type="text"
+					<label>ISBN</label> <input type="number"
 						value="<c:out value='${book.isbn}' />" class="form-control"
-						name="isbn">
+						name="isbn" required="required">
 				</fieldset>
 
 				<fieldset class="form-group">
-					<label>Páginas</label> <input type="text"
+					<label>Páginas</label> <input type="number"
 						value="<c:out value='${book.nmrPaginas}' />" class="form-control"
-						name="nmrPaginas">
+						name="nmrPaginas" required="required">
 				</fieldset>
 
 				<fieldset class="form-group">
