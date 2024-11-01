@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-
-
 import dao.BookDAO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -16,11 +14,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Book;
 
+//TODO: Arrumar nomes da tabela, tá um mix de ingles com pt.
+//TODO: implementar avisos para os métodos update/edit (exemplo no método insertBook)
+//TODO: Dar um truncate na tabela livros e fazer insert corretos;
+//TODO: tentar arrumar a visualização dos card. CSS
+//TODO: Criar Script SQL e colocar na pasta e github
+//TODO: Criar documentação do projeto. Explicar funcionalidades etc.
+//TODO: Criar sistema de paginação na listagem dos dados
+//TODO: Remover todos arquivos não utilizados. 
+
+
 @WebServlet("/")
 public class BookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private BookDAO bookDAO;
-	
+
 	public void init() {
 		bookDAO = new BookDAO();
 	}
@@ -63,15 +71,16 @@ public class BookServlet extends HttpServlet {
 		}
 	}
 
-	private void searchBook(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		
+	private void searchBook(HttpServletRequest request, HttpServletResponse response)
+			throws IOException, ServletException {
+
 		String procura = request.getParameter("query");
 		List<Book> listBook = bookDAO.selectAllBooksFromSearch(procura);
-		
+
 		request.setAttribute("listBook", listBook);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
 		dispatcher.forward(request, response);
-		
+
 	}
 
 	private void listBook(HttpServletRequest request, HttpServletResponse response)
@@ -98,33 +107,31 @@ public class BookServlet extends HttpServlet {
 
 	}
 
-	private void insertBook(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
-		
-		 try {
-		        String name = request.getParameter("name");
-		        String autor = request.getParameter("autor");
-		        int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
-		        Double isbn = Double.parseDouble(request.getParameter("isbn"));
-		        String capa = request.getParameter("capa");
-		        Book newBook = new Book(name, autor, nmrPaginas, isbn, capa);
-		        
-		        bookDAO.insertBook(newBook);
-		        
-		        // Armazenando mensagem de sucesso na sessão
-		        HttpSession session = request.getSession();
-		        session.setAttribute("message", "Livro inserido com sucesso!");
-		    } catch (Exception e) {
-		        // Armazenando mensagem de erro na sessão
-		        HttpSession session = request.getSession();
-		        session.setAttribute("error", "Erro ao inserir livro: " + e.getMessage());
-		    }
-		    
-		    response.sendRedirect("list");
+	private void insertBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+		try {
+			String name = request.getParameter("name");
+			String autor = request.getParameter("autor");
+			int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
+			Double isbn = Double.parseDouble(request.getParameter("isbn"));
+			String capa = request.getParameter("capa");
+			Book newBook = new Book(name, autor, nmrPaginas, isbn, capa);
+
+			bookDAO.insertBook(newBook);
+
+			// Armazenando mensagem de sucesso na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("message", "Livro inserido com sucesso!");
+		} catch (Exception e) {
+			// Armazenando mensagem de erro na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("error", "Erro ao inserir livro: " + e.getMessage());
+		}
+
+		response.sendRedirect("list");
 	}
 
-	private void updateBook(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
+	private void updateBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String name = request.getParameter("name");
 		String autor = request.getParameter("autor");
@@ -132,13 +139,12 @@ public class BookServlet extends HttpServlet {
 		Double isbn = Double.parseDouble(request.getParameter("isbn"));
 		String capa = request.getParameter("capa");
 
-		Book book = new Book(id,name, autor, nmrPaginas, isbn, capa);
+		Book book = new Book(id, name, autor, nmrPaginas, isbn, capa);
 		bookDAO.updateBook(book);
 		response.sendRedirect("list");
 	}
 
-	private void deleteBook(HttpServletRequest request, HttpServletResponse response) 
-			throws SQLException, IOException {
+	private void deleteBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
 		int id = Integer.parseInt(request.getParameter("id"));
 		bookDAO.deleteBook(id);
 		response.sendRedirect("list");

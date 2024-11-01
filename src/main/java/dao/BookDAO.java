@@ -14,8 +14,7 @@ import util.DatabaseQueries;
 
 public class BookDAO {
 
-	// TODO: Arrumar nomes da tabela, mix de ingles com pt.
-	// TODO: ISBN oficial tem 13 digitos. mudar para tipo string e varchar. Tipo Double(atual) só aceita 10 digitos
+	
 	
 	private final Connection connection;
 
