@@ -10,19 +10,12 @@ import java.util.List;
 
 import model.Book;
 import util.DatabaseConnection;
+import util.DatabaseQueries;
 
 public class BookDAO {
 
-	// TODO: Criar arquivo com msgs de erros
-
-	// TODO: colocar query em um arquivo separado
-	private static final String INSERT_BOOK_SQL = "INSERT INTO livros" + "  (name, autor, nmrPaginas, isbn, capa) VALUES "
-			+ " (?, ?, ?, ?, ?);";
-	private static final String SELECT_BOOK_BY_ID = "select id,name, autor, nmrPaginas, isbn, capa from livros where id =?";
-	private static final String SELECT_ALL_BOOKS = "select * from livros where isDeleted = 1";
-	private static final String DELETE_BOOK_SQL = "update livros set isDeleted = false  where id =?;";
-	private static final String UPDATE_BOOK_SQL = "update livros set name = ?,autor= ?, nmrPaginas =?, isbn =?, capa =?  where id =?;";
-
+	// TODO: Arrumar nomes da tabela, mix de ingles com pt.
+	
 	private final Connection connection;
 
 	public BookDAO() {
@@ -30,7 +23,7 @@ public class BookDAO {
 	}
 
 	public void insertBook(Book book) throws SQLException {
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(INSERT_BOOK_SQL)) {
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.INSERT_BOOK_SQL)) {
 
 			preparedStatement.setString(1, book.getName());
 			preparedStatement.setString(2, book.getAutor());
@@ -49,7 +42,7 @@ public class BookDAO {
 
 		Book book = null;
 
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(SELECT_BOOK_BY_ID);) {
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.SELECT_BOOK_BY_ID);) {
 
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -60,13 +53,13 @@ public class BookDAO {
 				int paginas = rs.getInt("nmrPaginas");
 				int isbn = rs.getInt("isbn");
 				String capa = rs.getString("capa");
-				book = new Book(id,  name, autor, paginas, isbn, capa);
+				book = new Book(id, name, autor, paginas, isbn, capa);
 			}
-			
+
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-		
+
 		return book;
 	}
 
@@ -74,7 +67,7 @@ public class BookDAO {
 
 		List<Book> books = new ArrayList<>();
 
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(SELECT_ALL_BOOKS);) {
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.SELECT_ALL_BOOKS);) {
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
@@ -86,31 +79,31 @@ public class BookDAO {
 				String capa = rs.getString("capa");
 				books.add(new Book(id, name, autor, paginas, isbn, capa));
 			}
-			
+
 		} catch (SQLException e) {
 			printSQLException(e);
 		}
-		
+
 		return books;
 	}
 
 	public boolean deleteBook(int id) throws SQLException {
-		
+
 		boolean rowDeleted;
-		
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DELETE_BOOK_SQL);) {
+
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.DELETE_BOOK_SQL);) {
 			preparedStatement.setInt(1, id);
 			rowDeleted = preparedStatement.executeUpdate() > 0;
 		}
-		
+
 		return rowDeleted;
 	}
 
 	public boolean updateBook(Book book) throws SQLException {
-		
+
 		boolean rowUpdated;
-		
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(UPDATE_BOOK_SQL);) {
+
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.UPDATE_BOOK_SQL);) {
 			preparedStatement.setString(1, book.getName());
 			preparedStatement.setString(2, book.getAutor());
 			preparedStatement.setInt(3, book.getNmrPaginas());
@@ -120,12 +113,12 @@ public class BookDAO {
 
 			rowUpdated = preparedStatement.executeUpdate() > 0;
 		}
-		
+
 		return rowUpdated;
 	}
 
 	private void printSQLException(SQLException ex) {
-		
+
 		for (Throwable e : ex) {
 			if (e instanceof SQLException) {
 				e.printStackTrace(System.err);
@@ -139,6 +132,43 @@ public class BookDAO {
 				}
 			}
 		}
+	}
+
+	public List<Book> selectAllBooksFromSearch(String procura) {
+
+		List<Book> books = new ArrayList<>();
+
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.SEARCH_BOOKS);) {
+
+			preparedStatement.setString(1, "%" + procura + "%");
+			preparedStatement.setString(2, "%" + procura + "%");
+
+			if (procura.matches("\\d+")) {
+				preparedStatement.setDouble(3, Double.parseDouble(procura));
+			} else {
+				preparedStatement.setDouble(3, 0);
+			}
+
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String name = rs.getString("name");
+				String autor = rs.getString("autor");
+				int paginas = rs.getInt("nmrPaginas");
+				int isbn = rs.getInt("isbn");
+				String capa = rs.getString("capa");
+				books.add(new Book(id, name, autor, paginas, isbn, capa));
+			}
+			
+			System.out.println(preparedStatement);
+			System.out.println(rs);
+
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+
+		return books;
 	}
 
 }

@@ -50,6 +50,9 @@ public class BookServlet extends HttpServlet {
 			case "/update":
 				updateBook(request, response);
 				break;
+			case "/search":
+				searchBook(request, response);
+				break;
 			default:
 				listBook(request, response);
 				break;
@@ -57,6 +60,17 @@ public class BookServlet extends HttpServlet {
 		} catch (SQLException ex) {
 			throw new ServletException(ex);
 		}
+	}
+
+	private void searchBook(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
+		String procura = request.getParameter("query");
+		List<Book> listBook = bookDAO.selectAllBooksFromSearch(procura);
+		
+		request.setAttribute("listBook", listBook);
+		RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
+		dispatcher.forward(request, response);
+		
 	}
 
 	private void listBook(HttpServletRequest request, HttpServletResponse response)
