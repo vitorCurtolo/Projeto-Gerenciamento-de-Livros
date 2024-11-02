@@ -14,14 +14,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Book;
 
-//TODO: Arrumar nomes da tabela, tá um mix de ingles com pt.
-//TODO: implementar avisos para os métodos update/edit (exemplo no método insertBook)
-//TODO: Dar um truncate na tabela livros e fazer insert corretos;
-//TODO: tentar arrumar a visualização dos card. CSS
-//TODO: Criar Script SQL e colocar na pasta e github
-//TODO: Criar documentação do projeto. Explicar funcionalidades etc.
-//TODO: Criar sistema de paginação na listagem dos dados
+//TODO: Arrumar nomes da tabela, tá um mix de ingles com pt. 
+//TODO: implementar avisos para os métodos update/delete (exemplo no método insertBook) MURILO
+//TODO: Dar um truncate na tabela livros e fazer insert corretos; VITOR
+//TODO: tentar arrumar a visualização dos card. CSS  MURILO
+//TODO: Criar Script SQL e colocar na pasta e github VITOR
+//TODO: Criar documentação do projeto. Explicar funcionalidades etc. MURILO/VITOR
+//TODO: Criar sistema de paginação na listagem dos dados MURILO
 //TODO: Remover todos arquivos não utilizados. 
+//TODO: REMOVER LINK DOS INDIANOS
 
 
 @WebServlet("/")
