@@ -3,7 +3,7 @@ package model;
 public class Book {
 	
 	public int id;
-	public String name;
+	public String nome;
 	public String autor;
 	public int nmrPaginas;
 	public Double isbn;
@@ -14,19 +14,19 @@ public class Book {
 	public Book() {
 	}
 
-	public Book(String name, String autor, int nmr_paginas, Double isbn, String capa) {
+	public Book(String nome, String autor, int nmr_paginas, Double isbn, String capa) {
 		super();
-		this.name = name;
+		this.nome = nome;
 		this.autor = autor;
 		this.nmrPaginas = nmr_paginas;
 		this.isbn = isbn;
 		this.capa = capa;
 	}
 	
-	public Book(int id, String name, String autor, int nmr_paginas, Double isbn, String capa) {
+	public Book(int id, String nome, String autor, int nmr_paginas, Double isbn, String capa) {
 		super();
 		this.id = id;
-		this.name = name;
+		this.nome = nome;
 		this.autor = autor;
 		this.nmrPaginas = nmr_paginas;
 		this.isbn = isbn;
@@ -41,12 +41,12 @@ public class Book {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	public String getAutor() {

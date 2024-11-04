@@ -25,7 +25,7 @@ public class BookDAO {
 	public void insertBook(Book book) throws SQLException {
 		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.INSERT_BOOK_SQL)) {
 
-			preparedStatement.setString(1, book.getName());
+			preparedStatement.setString(1, book.getNome());
 			preparedStatement.setString(2, book.getAutor());
 			preparedStatement.setInt(3, book.getNmrPaginas());
 			preparedStatement.setDouble(4, book.getIsbn());
@@ -48,12 +48,12 @@ public class BookDAO {
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
-				String name = rs.getString("name");
+				String nome = rs.getString("nome");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
 				Double isbn = rs.getDouble("isbn");
 				String capa = rs.getString("capa");
-				book = new Book(id, name, autor, paginas, isbn, capa);
+				book = new Book(id, nome, autor, paginas, isbn, capa);
 			}
 
 		} catch (SQLException e) {
@@ -72,12 +72,12 @@ public class BookDAO {
 
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String name = rs.getString("name");
+				String nome = rs.getString("nome");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
 				Double isbn = rs.getDouble("isbn");
 				String capa = rs.getString("capa");
-				books.add(new Book(id, name, autor, paginas, isbn, capa));
+				books.add(new Book(id, nome, autor, paginas, isbn, capa));
 			}
 
 		} catch (SQLException e) {
@@ -104,7 +104,7 @@ public class BookDAO {
 		boolean rowUpdated;
 
 		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.UPDATE_BOOK_SQL);) {
-			preparedStatement.setString(1, book.getName());
+			preparedStatement.setString(1, book.getNome());
 			preparedStatement.setString(2, book.getAutor());
 			preparedStatement.setInt(3, book.getNmrPaginas());
 			preparedStatement.setDouble(4, book.getIsbn());
@@ -153,12 +153,12 @@ public class BookDAO {
 
 			while (rs.next()) {
 				int id = rs.getInt("id");
-				String name = rs.getString("name");
+				String nome = rs.getString("nome");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
 				Double isbn = rs.getDouble("isbn");
 				String capa = rs.getString("capa");
-				books.add(new Book(id, name, autor, paginas, isbn, capa));
+				books.add(new Book(id, nome, autor, paginas, isbn, capa));
 			}
 			
 			System.out.println(preparedStatement);

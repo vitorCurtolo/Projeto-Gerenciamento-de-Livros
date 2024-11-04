@@ -15,7 +15,7 @@
 		<nav class="navbar navbar-expand-md navbar-dark"
 			style="background-color: tomato">
 			<div>
-				<a href="https://www.javaguides.net" class="navbar-brand"> Sistema de Gerenciamento de Livros </a>
+				<a href="<%=request.getContextPath()%>" class="navbar-brand"> Sistema de Gerenciamento de Livros </a>
 			</div>
 
 			<ul class="navbar-nav">
@@ -52,8 +52,8 @@
 
 				<fieldset class="form-group">
 					<label>Nome</label> <input type="text"
-						value="<c:out value='${book.name}' />" class="form-control"
-						name="name" required="required">
+						value="<c:out value='${book.nome}' />" class="form-control"
+						name="nome" required="required">
 				</fieldset>
 
 				<fieldset class="form-group">

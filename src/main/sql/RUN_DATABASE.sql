@@ -4,17 +4,17 @@ USE crud_db;
 
 create table livros (
 	id  int(3) NOT NULL AUTO_INCREMENT,
-	name varchar(250) NOT NULL,
+	nome varchar(250) NOT NULL,
 	autor varchar(250) NOT NULL,
 	nmrPaginas int,
-    isbn double,
+    isbn float,
     isDeleted boolean default true,
     capa varchar(350),
 	PRIMARY KEY (id)
 );
 
 
-INSERT INTO `crud_db`.`livros` (`name`, `autor`, `nmrPaginas`, `isbn`, `isDeleted`, `capa`) VALUES 
+INSERT INTO `crud_db`.`livros` (`nome`, `autor`, `nmrPaginas`, `isbn`, `isDeleted`, `capa`) VALUES 
 ('Código Limpo', 'Robert Martin', '464', '1', '1', 'https://m.media-amazon.com/images/I/71FC1O01QZL._AC_UL800_FMwebp_QL65_.jpg'),
 ('Refatoração: Aperfeiçoando o Design de Códigos Existentes', 'Martin Fowler', '448', '2', '1', 'https://m.media-amazon.com/images/I/71S3H7aTNmL._AC_UL800_FMwebp_QL65_.jpg'),
 ('The Pragmatic Programmer', 'Andrew Hunt, David Thomas', '352', '3', '1', 'https://m.media-amazon.com/images/I/41v+tWE4ffL._AC_UL800_FMwebp_QL65_.jpg'),

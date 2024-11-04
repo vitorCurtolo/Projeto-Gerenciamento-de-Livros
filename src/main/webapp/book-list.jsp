@@ -38,7 +38,7 @@
 		<nav class="navbar navbar-expand-md navbar-dark"
 			style="background-color: tomato">
 			<div>
-				<a href="https://www.javaguides.net" class="navbar-brand">
+				<a href="./list" class="navbar-brand">
 					Sistema de Gerenciamento de Livros</a>
 			</div>
 			<ul class="navbar-nav">
@@ -93,7 +93,7 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>Name</th>
+						<th>nome</th>
 						<th>Autor</th>
 						<th>Páginas</th>
 						<th>ISBN</th>
@@ -106,7 +106,7 @@
 					<c:forEach var="book" items="${listBook}">
 						<tr>
 							<td><c:out value="${book.id}" /></td>
-							<td><c:out value="${book.name}" /></td>
+							<td><c:out value="${book.nome}" /></td>
 							<td><c:out value="${book.autor}" /></td>
 							<td><c:out value="${book.nmrPaginas}" /></td>
 							<td><c:out value="${book.isbn}" /></td>
@@ -133,7 +133,7 @@
 						alt="Capa do Livro">
 					<div class="card-body">
 						<h5 class="card-title">
-							<c:out value="${book.name}" />
+							<c:out value="${book.nome}" />
 						</h5>
 						<p class="card-text">
 							<strong>Autor:</strong>
