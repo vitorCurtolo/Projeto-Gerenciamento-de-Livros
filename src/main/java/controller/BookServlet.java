@@ -114,7 +114,7 @@ public class BookServlet extends HttpServlet {
 			String nome = request.getParameter("nome");
 			String autor = request.getParameter("autor");
 			int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
-			Double isbn = Double.parseDouble(request.getParameter("isbn"));
+			Long isbn = Long.parseLong(request.getParameter("isbn"));
 			String capa = request.getParameter("capa");
 			Book newBook = new Book(nome, autor, nmrPaginas, isbn, capa);
 
@@ -137,7 +137,7 @@ public class BookServlet extends HttpServlet {
 		String nome = request.getParameter("nome");
 		String autor = request.getParameter("autor");
 		int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
-		Double isbn = Double.parseDouble(request.getParameter("isbn"));
+		Long isbn = Long.parseLong(request.getParameter("isbn"));
 		String capa = request.getParameter("capa");
 
 		Book book = new Book(id, nome, autor, nmrPaginas, isbn, capa);

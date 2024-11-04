@@ -28,7 +28,7 @@ public class BookDAO {
 			preparedStatement.setString(1, book.getNome());
 			preparedStatement.setString(2, book.getAutor());
 			preparedStatement.setInt(3, book.getNmrPaginas());
-			preparedStatement.setDouble(4, book.getIsbn());
+			preparedStatement.setLong(4, book.getIsbn());
 			preparedStatement.setString(5, book.getCapa());
 
 			preparedStatement.executeUpdate();
@@ -51,7 +51,7 @@ public class BookDAO {
 				String nome = rs.getString("nome");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
-				Double isbn = rs.getDouble("isbn");
+				Long isbn = rs.getLong("isbn");
 				String capa = rs.getString("capa");
 				book = new Book(id, nome, autor, paginas, isbn, capa);
 			}
@@ -75,7 +75,7 @@ public class BookDAO {
 				String nome = rs.getString("nome");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
-				Double isbn = rs.getDouble("isbn");
+				Long isbn = rs.getLong("isbn");
 				String capa = rs.getString("capa");
 				books.add(new Book(id, nome, autor, paginas, isbn, capa));
 			}
@@ -107,7 +107,7 @@ public class BookDAO {
 			preparedStatement.setString(1, book.getNome());
 			preparedStatement.setString(2, book.getAutor());
 			preparedStatement.setInt(3, book.getNmrPaginas());
-			preparedStatement.setDouble(4, book.getIsbn());
+			preparedStatement.setLong(4, book.getIsbn());
 			preparedStatement.setString(5, book.getCapa());
 			preparedStatement.setInt(6, book.getId());
 
@@ -144,9 +144,9 @@ public class BookDAO {
 			preparedStatement.setString(2, "%" + procura + "%");
 
 			if (procura.matches("\\d+")) {
-				preparedStatement.setDouble(3, Double.parseDouble(procura));
+				preparedStatement.setLong(3, Long.parseLong(procura));
 			} else {
-				preparedStatement.setDouble(3, 0);
+				preparedStatement.setLong(3, 0);
 			}
 
 			ResultSet rs = preparedStatement.executeQuery();
@@ -156,7 +156,7 @@ public class BookDAO {
 				String nome = rs.getString("nome");
 				String autor = rs.getString("autor");
 				int paginas = rs.getInt("nmrPaginas");
-				Double isbn = rs.getDouble("isbn");
+				Long isbn = rs.getLong("isbn");
 				String capa = rs.getString("capa");
 				books.add(new Book(id, nome, autor, paginas, isbn, capa));
 			}

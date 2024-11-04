@@ -6,7 +6,7 @@ public class Book {
 	public String nome;
 	public String autor;
 	public int nmrPaginas;
-	public Double isbn;
+	public Long isbn;
 	public boolean isDeleted;
 	public String capa;
 
@@ -14,7 +14,7 @@ public class Book {
 	public Book() {
 	}
 
-	public Book(String nome, String autor, int nmr_paginas, Double isbn, String capa) {
+	public Book(String nome, String autor, int nmr_paginas, Long isbn, String capa) {
 		super();
 		this.nome = nome;
 		this.autor = autor;
@@ -23,7 +23,7 @@ public class Book {
 		this.capa = capa;
 	}
 	
-	public Book(int id, String nome, String autor, int nmr_paginas, Double isbn, String capa) {
+	public Book(int id, String nome, String autor, int nmr_paginas, Long isbn, String capa) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -65,11 +65,11 @@ public class Book {
 		this.nmrPaginas = nmrPaginas;
 	}
 
-	public Double getIsbn() {
+	public Long getIsbn() {
 		return isbn;
 	}
 
-	public void setIsbn(Double isbn) {
+	public void setIsbn(Long isbn) {
 		this.isbn = isbn;
 	}
 
