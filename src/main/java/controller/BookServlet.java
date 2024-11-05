@@ -18,7 +18,6 @@ import model.Book;
 //TODO: tentar arrumar a visualização dos card. CSS  MURILO
 //TODO: Criar documentação do projeto. Explicar funcionalidades etc. MURILO/VITOR
 //TODO: Criar sistema de paginação na listagem dos dados MURILO
-//TODO: Remover todos arquivos não utilizados. 
 
 
 @WebServlet("/")

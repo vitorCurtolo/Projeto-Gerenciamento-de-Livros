@@ -26,9 +26,19 @@
 	margin: 1rem;
 }
 
+.card img {
+	width: 100%;
+    height: 315px;
+}
+
 #cardView {
 	flex-wrap: wrap; /* Permite que os cards quebrem linha */
 	justify-content: center;
+}
+.card-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 </style>
 </head>
@@ -38,8 +48,8 @@
 		<nav class="navbar navbar-expand-md navbar-dark"
 			style="background-color: tomato">
 			<div>
-				<a href="./list" class="navbar-brand">
-					Sistema de Gerenciamento de Livros</a>
+				<a href="./list" class="navbar-brand"> Sistema de Gerenciamento
+					de Livros</a>
 			</div>
 			<ul class="navbar-nav">
 				<li><a href="<%=request.getContextPath()%>/list"
@@ -143,10 +153,12 @@
 							<br> <strong>ISBN:</strong>
 							<c:out value="${book.isbn}" />
 						</p>
-						<a href="edit?id=<c:out value='${book.id}' />"
-							class="btn btn-primary">Edit</a> <a
-							href="delete?id=<c:out value='${book.id}' />"
-							class="btn btn-danger">Delete</a>
+						<div class="buttons_card">
+							<a href="edit?id=<c:out value='${book.id}' />"
+								class="btn btn-primary">Edit</a> <a
+								href="delete?id=<c:out value='${book.id}' />"
+								class="btn btn-danger">Delete</a>
+						</div>
 					</div>
 				</div>
 			</c:forEach>
