@@ -1,3 +1,9 @@
+## Manual de execução
+* O script SQL se encontra em src/main/sql/RUN_DATABASE.sql.
+* Na classe DatabaseConnection é necessário alterar usuário e senha do banco de dados.
+* Tomcat vs 10.1
+* Dynamic web module version 6.0
+  
 ## Documentação Técnica: Sistema de Gerenciamento de Livros
 
 ### 1. Introdução
