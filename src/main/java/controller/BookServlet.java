@@ -14,11 +14,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Book;
 
-//TODO: implementar avisos para os métodos update/delete (exemplo no método insertBook) MURILO
-//TODO: tentar arrumar a visualização dos card. CSS  MURILO
 //TODO: Criar documentação do projeto. Explicar funcionalidades etc. MURILO/VITOR
 //TODO: Criar sistema de paginação na listagem dos dados MURILO
-
 
 @WebServlet("/")
 public class BookServlet extends HttpServlet {
@@ -128,21 +125,42 @@ public class BookServlet extends HttpServlet {
 	}
 
 	private void updateBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		String nome = request.getParameter("nome");
-		String autor = request.getParameter("autor");
-		int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
-		Long isbn = Long.parseLong(request.getParameter("isbn"));
-		String capa = request.getParameter("capa");
+		try {
+			int id = Integer.parseInt(request.getParameter("id"));
+			String nome = request.getParameter("nome");
+			String autor = request.getParameter("autor");
+			int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
+			Long isbn = Long.parseLong(request.getParameter("isbn"));
+			String capa = request.getParameter("capa");
 
-		Book book = new Book(id, nome, autor, nmrPaginas, isbn, capa);
-		bookDAO.updateBook(book);
+			Book book = new Book(id, nome, autor, nmrPaginas, isbn, capa);
+			bookDAO.updateBook(book);
+
+			// Armazenando mensagem de sucesso na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("message", "Livro atualizado com sucesso!");
+		} catch (Exception e) {
+			// Armazenando mensagem de erro na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("error", "Erro ao atualizar livro: " + e.getMessage());
+		}
+
 		response.sendRedirect("list");
 	}
 
 	private void deleteBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
-		int id = Integer.parseInt(request.getParameter("id"));
-		bookDAO.deleteBook(id);
+		try {
+			int id = Integer.parseInt(request.getParameter("id"));
+			bookDAO.deleteBook(id);
+			// Armazenando mensagem de sucesso na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("message", "Livro deletado com sucesso!");
+		} catch (Exception e) {
+			// Armazenando mensagem de erro na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("error", "Erro ao deletaar livro: " + e.getMessage());
+		}
+
 		response.sendRedirect("list");
 
 	}
