@@ -46,7 +46,7 @@
 
 	<header>
 		<nav class="navbar navbar-expand-md navbar-dark"
-			style="background-color: tomato">
+			style="background-color: #3a415a">
 			<div>
 				<a href="./list" class="navbar-brand"> Sistema de Gerenciamento
 					de Livros</a>
