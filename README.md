@@ -46,5 +46,5 @@ O sistema de gerenciamento de livros apresenta uma solução eficaz para o contr
 Agradecimentos: Agradecemos a toda a equipe de desenvolvimento pela dedicação e profissionalismo.
 
 ### 6. Time de Desenvolvedores
-Murilo Magossi - CP 301830X
-Vitor Curtolo - CP 3019055
+* Murilo Magossi - CP 301830X
+* Vitor Curtolo - CP 3019055
