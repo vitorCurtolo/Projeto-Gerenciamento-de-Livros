@@ -165,10 +165,10 @@ JSP
 
 ```
 
-### 5. Considerações Finais
+### 6. Considerações Finais
 O sistema de gerenciamento de livros apresenta uma solução eficaz para o controle do acervo de uma biblioteca. Futuras melhorias podem incluir a implementação de um sistema de empréstimo, a integração com outros sistemas e a geração de relatórios personalizados.
 Agradecimentos: Agradecemos a toda a equipe de desenvolvimento pela dedicação e profissionalismo.
 
-### 6. Time de Desenvolvedores
+### 7. Time de Desenvolvedores
 * Murilo Magossi - CP 301830X
 * Vitor Curtolo - CP 3019055
