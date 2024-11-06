@@ -1,3 +1,9 @@
+## Manual de execução
+* O script SQL se encontra em src/main/sql/RUN_DATABASE.sql.
+* Na classe DatabaseConnection é necessário alterar usuário e senha do banco de dados.
+* Tomcat vs 10.1
+* Dynamic web module version 6.0
+  
 ## Documentação Técnica: Sistema de Gerenciamento de Livros
 
 ### 1. Introdução
@@ -41,10 +47,134 @@ O sistema foi desenvolvido utilizando uma arquitetura MVC (Model-View-Controller
 * **Performance:** A performance da aplicação foi otimizada através da utilização de índices no banco de dados e da minificação de arquivos CSS e JavaScript.
 * **Segurança:** Foram implementadas medidas de segurança para evitar injeção de SQL e outras vulnerabilidades comuns.
 
-### 5. Considerações Finais
+### 5. Code snippets
+**Conexão com Banco de Dados:** Classe separada para garantir resposabilidade única.
+```
+public class DatabaseConnection {
+    private static final String URL = "jdbc:mysql://localhost:3306/crud_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "root";
+
+    public static Connection getConnection() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Carregar o driver do MySQL
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            System.err.println("Driver JDBC não encontrado.");
+            e.printStackTrace();
+            return null;
+        } catch (SQLException e) {
+            System.err.println("Erro ao conectar com o banco de dados.");
+            e.printStackTrace();
+            return null;
+        }
+    }
+}
+```
+
+**Classe de SQL Queries:** Classe separada para garantir resposabilidade única. Campos statics e final.
+```
+public class DatabaseQueries {
+	
+	public static final String INSERT_BOOK_SQL = "INSERT INTO livros"
+			+ "  (nome, autor, nmrPaginas, isbn, capa) VALUES " + " (?, ?, ?, ?, ?);";
+	
+	public static final String SELECT_BOOK_BY_ID = "select id,nome, autor, nmrPaginas, isbn, capa from livros where id =?";
+	
+	public static final String SELECT_ALL_BOOKS = "select * from livros where isDeleted = 1";
+	
+	public static final String DELETE_BOOK_SQL = "update livros set isDeleted = false  where id =?;";
+	
+	public static final String UPDATE_BOOK_SQL = "update livros set nome = ?,autor= ?, nmrPaginas =?, isbn =?, capa =?  where id =?;";
+	
+	public static final String SEARCH_BOOKS = "SELECT * FROM livros WHERE (nome LIKE ? OR autor LIKE ? OR isbn = ?) AND isDeleted = 1";
+
+
+}
+
+```
+
+**Switch no método doGet:** Essa prática ajuda no redirecionamente dos métodos que são responsáveis por manipular cada path.
+```
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String action = request.getServletPath();
+
+		try {
+			switch (action) {
+			case "/new":
+				showNewForm(request, response);
+				break;
+			case "/insert":
+				insertBook(request, response);
+				break;
+			case "/delete":
+				deleteBook(request, response);
+				break;
+			case "/edit":
+				showEditForm(request, response);
+				break;
+			case "/update":
+				updateBook(request, response);
+				break;
+			case "/search":
+				searchBook(request, response);
+				break;
+			default:
+				listBook(request, response);
+				break;
+			}
+		} catch (SQLException ex) {
+			throw new ServletException(ex);
+		}
+	}
+```
+
+**Mecanismo de FeedBack utilizando HttpSession:** ese mecanismo foi inserido em todas as etapas no CRUD, exceto Read.
+```
+JAVA
+	private void insertBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
+
+		try {
+			String nome = request.getParameter("nome");
+			String autor = request.getParameter("autor");
+			int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
+			Long isbn = Long.parseLong(request.getParameter("isbn"));
+			String capa = request.getParameter("capa");
+			Book newBook = new Book(nome, autor, nmrPaginas, isbn, capa);
+
+			bookDAO.insertBook(newBook);
+
+			// Armazenando mensagem de sucesso na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("message", "Livro inserido com sucesso!");
+		} catch (Exception e) {
+			// Armazenando mensagem de erro na sessão
+			HttpSession session = request.getSession();
+			session.setAttribute("error", "Erro ao inserir livro: " + e.getMessage());
+		}
+
+		response.sendRedirect("list");
+	}
+
+JSP
+
+	<c:if test="${not empty sessionScope.message}">
+		<div id="successMessage" class="alert alert-success">${sessionScope.message}</div>
+		<c:remove var="message" scope="session" />
+	</c:if>
+
+	<c:if test="${not empty sessionScope.error}">
+		<div id="errorMessage" class="alert alert-danger">${sessionScope.error}</div>
+		<c:remove var="error" scope="session" />
+	</c:if>
+
+```
+
+### 6. Considerações Finais
 O sistema de gerenciamento de livros apresenta uma solução eficaz para o controle do acervo de uma biblioteca. Futuras melhorias podem incluir a implementação de um sistema de empréstimo, a integração com outros sistemas e a geração de relatórios personalizados.
 Agradecimentos: Agradecemos a toda a equipe de desenvolvimento pela dedicação e profissionalismo.
 
-### 6. Time de Desenvolvedores
-Murilo Magossi - CP 301830X
-Vitor Curtolo - CP 3019055
+### 7. Time de Desenvolvedores
+* Murilo Magossi - CP 301830X
+* Vitor Curtolo - CP 3019055
