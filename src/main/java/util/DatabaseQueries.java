@@ -14,6 +14,10 @@ public class DatabaseQueries {
 	public static final String UPDATE_BOOK_SQL = "update livros set nome = ?,autor= ?, nmrPaginas =?, isbn =?, capa =?  where id =?;";
 	
 	public static final String SEARCH_BOOKS = "SELECT * FROM livros WHERE (nome LIKE ? OR autor LIKE ? OR isbn = ?) AND isDeleted = 1";
+	
+	public static final String GET_TOTAL_RECORDS = "SELECT COUNT(*) AS count FROM livros where isDeleted = 1";
+	
+	public static final String GET_BOOKS_PAGINATED = "SELECT * FROM livros where isDeleted = 1 ORDER BY id LIMIT ? OFFSET ?";
 
 
 }

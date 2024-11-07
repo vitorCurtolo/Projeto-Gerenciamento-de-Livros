@@ -14,8 +14,6 @@ import util.DatabaseQueries;
 
 public class BookDAO {
 
-	
-	
 	private final Connection connection;
 
 	public BookDAO() {
@@ -42,7 +40,8 @@ public class BookDAO {
 
 		Book book = null;
 
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.SELECT_BOOK_BY_ID);) {
+		try (PreparedStatement preparedStatement = this.connection
+				.prepareStatement(DatabaseQueries.SELECT_BOOK_BY_ID);) {
 
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -67,7 +66,8 @@ public class BookDAO {
 
 		List<Book> books = new ArrayList<>();
 
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.SELECT_ALL_BOOKS);) {
+		try (PreparedStatement preparedStatement = this.connection
+				.prepareStatement(DatabaseQueries.SELECT_ALL_BOOKS);) {
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
@@ -160,9 +160,7 @@ public class BookDAO {
 				String capa = rs.getString("capa");
 				books.add(new Book(id, nome, autor, paginas, isbn, capa));
 			}
-			
-			System.out.println(preparedStatement);
-			System.out.println(rs);
+
 
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -170,47 +168,46 @@ public class BookDAO {
 
 		return books;
 	}
+
 	// Método para buscar livros paginados
 	public List<Book> selectBooksPaginated(int offset, int limit) {
-	    List<Book> books = new ArrayList<>();
-	    String query = "SELECT * FROM livros ORDER BY id LIMIT ? OFFSET ?";
+		List<Book> books = new ArrayList<>();
 
-	    try (PreparedStatement preparedStatement = this.connection.prepareStatement(query)) {
-	        preparedStatement.setInt(1, limit);
-	        preparedStatement.setInt(2, offset);
-	        ResultSet rs = preparedStatement.executeQuery();
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.GET_BOOKS_PAGINATED)) {
+			preparedStatement.setInt(1, limit);
+			preparedStatement.setInt(2, offset);
+			ResultSet rs = preparedStatement.executeQuery();
 
-	        while (rs.next()) {
-	            int id = rs.getInt("id");
-	            String nome = rs.getString("nome");
-	            String autor = rs.getString("autor");
-	            int paginas = rs.getInt("nmrPaginas");
-	            Long isbn = rs.getLong("isbn");
-	            String capa = rs.getString("capa");
-	            books.add(new Book(id, nome, autor, paginas, isbn, capa));
-	        }
-	    } catch (SQLException e) {
-	        printSQLException(e);
-	    }
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String nome = rs.getString("nome");
+				String autor = rs.getString("autor");
+				int paginas = rs.getInt("nmrPaginas");
+				Long isbn = rs.getLong("isbn");
+				String capa = rs.getString("capa");
+				books.add(new Book(id, nome, autor, paginas, isbn, capa));
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
 
-	    return books;
+		return books;
 	}
 
 	// Método para contar o número total de registros
 	public int getTotalRecords() {
-	    int totalRecords = 0;
-	    String query = "SELECT COUNT(*) AS count FROM livros";
+		int totalRecords = 0;
 
-	    try (PreparedStatement preparedStatement = this.connection.prepareStatement(query)) {
-	        ResultSet rs = preparedStatement.executeQuery();
-	        if (rs.next()) {
-	            totalRecords = rs.getInt("count");
-	        }
-	    } catch (SQLException e) {
-	        printSQLException(e);
-	    }
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.GET_TOTAL_RECORDS)) {
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				totalRecords = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
 
-	    return totalRecords;
+		return totalRecords;
 	}
 
 }

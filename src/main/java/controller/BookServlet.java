@@ -76,13 +76,6 @@ public class BookServlet extends HttpServlet {
 
 	}
 
-	/*private void listBook(HttpServletRequest request, HttpServletResponse response)
-			throws SQLException, IOException, ServletException {
-		List<Book> listBook = bookDAO.selectAllBooks();
-		request.setAttribute("listBook", listBook);
-		RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
-		dispatcher.forward(request, response);
-	}*/
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -164,27 +157,27 @@ public class BookServlet extends HttpServlet {
 		response.sendRedirect("list");
 
 	}
+
 	private void listBook(HttpServletRequest request, HttpServletResponse response)
-	        throws SQLException, IOException, ServletException {
-	    int page = 1;
-	    int recordsPerPage = 5;
+			throws SQLException, IOException, ServletException {
+		int page = 1;
+		int recordsPerPage = 5;
 
-	    if (request.getParameter("page") != null) {
-	        page = Integer.parseInt(request.getParameter("page"));
-	    }
+		if (request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
+		}
 
-	    int offset = (page - 1) * recordsPerPage;
-	    List<Book> listBook = bookDAO.selectBooksPaginated(offset, recordsPerPage);
-	    int noOfRecords = bookDAO.getTotalRecords();
-	    int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+		int offset = (page - 1) * recordsPerPage;
+		List<Book> listBook = bookDAO.selectBooksPaginated(offset, recordsPerPage);
+		int noOfRecords = bookDAO.getTotalRecords();
+		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
-	    request.setAttribute("listBook", listBook);
-	    request.setAttribute("noOfPages", noOfPages);
-	    request.setAttribute("currentPage", page);
-	    
-	    RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
-	    dispatcher.forward(request, response);
+		request.setAttribute("listBook", listBook);
+		request.setAttribute("noOfPages", noOfPages);
+		request.setAttribute("currentPage", page);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
+		dispatcher.forward(request, response);
 	}
-
 
 }

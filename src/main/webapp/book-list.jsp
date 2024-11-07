@@ -28,48 +28,49 @@
 
 .card img {
 	width: 100%;
-    height: 315px;
+	height: 315px;
 }
 
 #cardView {
 	flex-wrap: wrap; /* Permite que os cards quebrem linha */
 	justify-content: center;
 }
-.card-body{
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+
+.card-body {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
 }
+
 .pagination {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
 }
 
 .pagination .page-item {
-    margin: 0 5px;
+	margin: 0 5px;
 }
 
 .pagination .page-link {
-    color: #3a415a;
-    border-radius: 5px;
-    padding: 8px 12px;
-    border: 1px solid #ddd;
-    text-decoration: none;
-    transition: background-color 0.3s ease, color 0.3s ease;
+	color: #3a415a;
+	border-radius: 5px;
+	padding: 8px 12px;
+	border: 1px solid #ddd;
+	text-decoration: none;
+	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .pagination .page-link:hover {
-    background-color: #3a415a;
-    color: #fff;
+	background-color: #3a415a;
+	color: #fff;
 }
 
 .pagination .active .page-link {
-    background-color: #3a415a;
-    color: #fff;
-    border-color: #3a415a;
+	background-color: #3a415a;
+	color: #fff;
+	border-color: #3a415a;
 }
-
 </style>
 </head>
 <body>
@@ -194,26 +195,23 @@
 			</c:forEach>
 		</div>
 		<nav aria-label="Page navigation">
-    <ul class="pagination">
-        <c:if test="${currentPage > 1}">
-            <li class="page-item">
-                <a class="page-link" href="?page=${currentPage - 1}">Anterior</a>
-            </li>
-        </c:if>
+			<ul class="pagination">
+				<c:if test="${currentPage > 1}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${currentPage - 1}">Anterior</a></li>
+				</c:if>
 
-        <c:forEach var="i" begin="1" end="${noOfPages}">
-            <li class="page-item ${i == currentPage ? 'active' : ''}">
-                <a class="page-link" href="?page=${i}">${i}</a>
-            </li>
-        </c:forEach>
+				<c:forEach var="i" begin="1" end="${noOfPages}">
+					<li class="page-item ${i == currentPage ? 'active' : ''}"><a
+						class="page-link" href="?page=${i}">${i}</a></li>
+				</c:forEach>
 
-        <c:if test="${currentPage < noOfPages}">
-            <li class="page-item">
-                <a class="page-link" href="?page=${currentPage + 1}">Próxima</a>
-            </li>
-        </c:if>
-    </ul>
-</nav>
+				<c:if test="${currentPage < noOfPages}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${currentPage + 1}">Próxima</a></li>
+				</c:if>
+			</ul>
+		</nav>
 
 	</div>
 
