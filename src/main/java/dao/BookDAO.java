@@ -170,5 +170,47 @@ public class BookDAO {
 
 		return books;
 	}
+	// Método para buscar livros paginados
+	public List<Book> selectBooksPaginated(int offset, int limit) {
+	    List<Book> books = new ArrayList<>();
+	    String query = "SELECT * FROM livros ORDER BY id LIMIT ? OFFSET ?";
+
+	    try (PreparedStatement preparedStatement = this.connection.prepareStatement(query)) {
+	        preparedStatement.setInt(1, limit);
+	        preparedStatement.setInt(2, offset);
+	        ResultSet rs = preparedStatement.executeQuery();
+
+	        while (rs.next()) {
+	            int id = rs.getInt("id");
+	            String nome = rs.getString("nome");
+	            String autor = rs.getString("autor");
+	            int paginas = rs.getInt("nmrPaginas");
+	            Long isbn = rs.getLong("isbn");
+	            String capa = rs.getString("capa");
+	            books.add(new Book(id, nome, autor, paginas, isbn, capa));
+	        }
+	    } catch (SQLException e) {
+	        printSQLException(e);
+	    }
+
+	    return books;
+	}
+
+	// Método para contar o número total de registros
+	public int getTotalRecords() {
+	    int totalRecords = 0;
+	    String query = "SELECT COUNT(*) AS count FROM livros";
+
+	    try (PreparedStatement preparedStatement = this.connection.prepareStatement(query)) {
+	        ResultSet rs = preparedStatement.executeQuery();
+	        if (rs.next()) {
+	            totalRecords = rs.getInt("count");
+	        }
+	    } catch (SQLException e) {
+	        printSQLException(e);
+	    }
+
+	    return totalRecords;
+	}
 
 }
