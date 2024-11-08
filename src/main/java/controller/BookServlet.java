@@ -14,16 +14,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Book;
 
-//TODO: Criar documentação do projeto. Explicar funcionalidades etc. MURILO/VITOR
-//TODO: Criar sistema de paginação na listagem dos dados MURILO
-
 @WebServlet("/")
 public class BookServlet extends HttpServlet {
+
 	private static final long serialVersionUID = 1L;
+
 	private BookDAO bookDAO;
 
-	public void init() {
-		bookDAO = new BookDAO();
+	public void initializeConnection(String databaseName) {
+		bookDAO = new BookDAO(databaseName);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -33,7 +32,14 @@ public class BookServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		
+		
 		String action = request.getServletPath();
+		
+		
+		
+		this.initializeConnection(action);
 
 		try {
 			switch (action) {
@@ -68,14 +74,16 @@ public class BookServlet extends HttpServlet {
 			throws IOException, ServletException {
 
 		String procura = request.getParameter("query");
-		List<Book> listBook = bookDAO.selectAllBooksFromSearch(procura);
+		
+		String categoria = request.getParameter("categoria");
+		
+		List<Book> listBook = bookDAO.selectAllBooksFromSearch(procura, categoria);
 
 		request.setAttribute("listBook", listBook);
 		RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
 		dispatcher.forward(request, response);
 
 	}
-
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -101,7 +109,9 @@ public class BookServlet extends HttpServlet {
 			int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
 			Long isbn = Long.parseLong(request.getParameter("isbn"));
 			String capa = request.getParameter("capa");
-			Book newBook = new Book(nome, autor, nmrPaginas, isbn, capa);
+			String categoria = request.getParameter("categoria");
+
+			Book newBook = new Book(nome, autor, nmrPaginas, isbn, capa,categoria);
 
 			bookDAO.insertBook(newBook);
 
@@ -125,8 +135,9 @@ public class BookServlet extends HttpServlet {
 			int nmrPaginas = Integer.parseInt(request.getParameter("nmrPaginas"));
 			Long isbn = Long.parseLong(request.getParameter("isbn"));
 			String capa = request.getParameter("capa");
+			String categoria = request.getParameter("categoria");
 
-			Book book = new Book(id, nome, autor, nmrPaginas, isbn, capa);
+			Book book = new Book(id, nome, autor, nmrPaginas, isbn, capa,categoria);
 			bookDAO.updateBook(book);
 
 			// Armazenando mensagem de sucesso na sessão
@@ -160,6 +171,9 @@ public class BookServlet extends HttpServlet {
 
 	private void listBook(HttpServletRequest request, HttpServletResponse response)
 			throws SQLException, IOException, ServletException {
+		
+		String categoria = request.getParameter("categoria");
+		
 		int page = 1;
 		int recordsPerPage = 5;
 
@@ -168,8 +182,8 @@ public class BookServlet extends HttpServlet {
 		}
 
 		int offset = (page - 1) * recordsPerPage;
-		List<Book> listBook = bookDAO.selectBooksPaginated(offset, recordsPerPage);
-		int noOfRecords = bookDAO.getTotalRecords();
+		List<Book> listBook = bookDAO.selectBooksPaginated(offset, recordsPerPage, categoria);
+		int noOfRecords = bookDAO.getTotalRecords(categoria);
 		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
 
 		request.setAttribute("listBook", listBook);

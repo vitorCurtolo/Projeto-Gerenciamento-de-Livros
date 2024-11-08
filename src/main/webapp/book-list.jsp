@@ -20,6 +20,11 @@
 				: 'none';
 	}
 </script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 <style>
 .card {
 	width: 14rem;
@@ -75,19 +80,33 @@
 </head>
 <body>
 
-	<header>
-		<nav class="navbar navbar-expand-md navbar-dark"
-			style="background-color: #3a415a">
-			<div>
-				<a href="./list" class="navbar-brand"> Sistema de Gerenciamento
-					de Livros</a>
-			</div>
-			<ul class="navbar-nav">
-				<li><a href="<%=request.getContextPath()%>/list"
-					class="nav-link">Livros</a></li>
-			</ul>
-		</nav>
-	</header>
+<header>
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #3a415a">
+        <div>
+            <a href="./list" class="navbar-brand">Sistema de Gerenciamento de Livros</a>
+        </div>
+        <ul class="navbar-nav">
+            <li class="nav-item"><a href="<%=request.getContextPath()%>/list" class="nav-link">Livros</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="categoryDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categorias
+                </a>
+                <div class="dropdown-menu" aria-labelledby="categoryDropdown">
+                    <!-- Add each category as a link with URL parameter for the category name -->
+                    <a class="dropdown-item" href="<%=request.getContextPath()%>/list?categoria=ficcao">Ficção</a>
+                    <a class="dropdown-item" href="<%=request.getContextPath()%>/list?categoria=aventura">Aventura</a>
+                    <a class="dropdown-item" href="<%=request.getContextPath()%>/list?categoria=romance">Romance</a>
+                    <a class="dropdown-item" href="<%=request.getContextPath()%>/list?categoria=TI">TI</a>
+                    <!-- Add more categories as needed -->
+                </div>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+
+
+
 
 	<c:if test="${not empty sessionScope.message}">
 		<div id="successMessage" class="alert alert-success">${sessionScope.message}</div>
@@ -118,8 +137,10 @@
 				Livro</a>
 
 			<!-- Barra de pesquisa -->
-			<form action="<%=request.getContextPath()%>/search" method="GET"
+			<form action="<%=request.getContextPath()%>/search?" method="GET"
 				class="form-inline">
+				
+				<input type="hidden" name="categoria" value="<%= request.getParameter("categoria") %>">
 				<input type="text" name="query" class="form-control mr-2"
 					placeholder="Nome, Autor e ISBN">
 				<button type="submit" class="btn btn-primary">Pesquisar</button>
@@ -134,10 +155,11 @@
 				<thead>
 					<tr>
 						<th>ID</th>
-						<th>nome</th>
+						<th>Nome</th>
 						<th>Autor</th>
 						<th>Páginas</th>
 						<th>ISBN</th>
+						<th>Categoria</th>
 						<th>Capa</th>
 						<th>Ações</th>
 						<th>Ações</th>
@@ -151,6 +173,7 @@
 							<td><c:out value="${book.autor}" /></td>
 							<td><c:out value="${book.nmrPaginas}" /></td>
 							<td><c:out value="${book.isbn}" /></td>
+							<td><c:out value="${book.categoria}" /></td>
 							<td><img src="<c:out value='${book.capa}' />"
 								alt="Capa do Livro" width="60" /></td>
 							<td><a href="edit?id=<c:out value='${book.id}' />"> <span

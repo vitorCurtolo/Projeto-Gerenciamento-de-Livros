@@ -16,7 +16,7 @@ public class BookDAO {
 
 	private final Connection connection;
 
-	public BookDAO() {
+	public BookDAO(String databaseName) {
 		this.connection = DatabaseConnection.getConnection();
 	}
 
@@ -28,6 +28,7 @@ public class BookDAO {
 			preparedStatement.setInt(3, book.getNmrPaginas());
 			preparedStatement.setLong(4, book.getIsbn());
 			preparedStatement.setString(5, book.getCapa());
+			preparedStatement.setString(6, book.getCategoria());
 
 			preparedStatement.executeUpdate();
 
@@ -52,7 +53,8 @@ public class BookDAO {
 				int paginas = rs.getInt("nmrPaginas");
 				Long isbn = rs.getLong("isbn");
 				String capa = rs.getString("capa");
-				book = new Book(id, nome, autor, paginas, isbn, capa);
+				String categoria = rs.getString("categoria");
+				book = new Book(id, nome, autor, paginas, isbn, capa, categoria);
 			}
 
 		} catch (SQLException e) {
@@ -77,7 +79,8 @@ public class BookDAO {
 				int paginas = rs.getInt("nmrPaginas");
 				Long isbn = rs.getLong("isbn");
 				String capa = rs.getString("capa");
-				books.add(new Book(id, nome, autor, paginas, isbn, capa));
+				String categoria = rs.getString("categoria");
+				books.add(new Book(id, nome, autor, paginas, isbn, capa, categoria));
 			}
 
 		} catch (SQLException e) {
@@ -109,7 +112,8 @@ public class BookDAO {
 			preparedStatement.setInt(3, book.getNmrPaginas());
 			preparedStatement.setLong(4, book.getIsbn());
 			preparedStatement.setString(5, book.getCapa());
-			preparedStatement.setInt(6, book.getId());
+			preparedStatement.setString(6, book.getCategoria());
+			preparedStatement.setInt(7, book.getId());
 
 			rowUpdated = preparedStatement.executeUpdate() > 0;
 		}
@@ -134,7 +138,7 @@ public class BookDAO {
 		}
 	}
 
-	public List<Book> selectAllBooksFromSearch(String procura) {
+	public List<Book> selectAllBooksFromSearch(String procura, String categoria) {
 
 		List<Book> books = new ArrayList<>();
 
@@ -149,6 +153,14 @@ public class BookDAO {
 				preparedStatement.setLong(3, 0);
 			}
 
+			if (categoria.equalsIgnoreCase("null")) {
+				preparedStatement.setString(4, "TI");
+
+			} else {
+				preparedStatement.setString(4, categoria);
+
+			}
+
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
@@ -158,9 +170,9 @@ public class BookDAO {
 				int paginas = rs.getInt("nmrPaginas");
 				Long isbn = rs.getLong("isbn");
 				String capa = rs.getString("capa");
-				books.add(new Book(id, nome, autor, paginas, isbn, capa));
+				String categoria_vo = rs.getString("categoria");
+				books.add(new Book(id, nome, autor, paginas, isbn, capa, categoria_vo));
 			}
-
 
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -170,13 +182,22 @@ public class BookDAO {
 	}
 
 	// Método para buscar livros paginados
-	public List<Book> selectBooksPaginated(int offset, int limit) {
+	public List<Book> selectBooksPaginated(int offset, int limit, String categoria) {
 		List<Book> books = new ArrayList<>();
 
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.GET_BOOKS_PAGINATED)) {
-			preparedStatement.setInt(1, limit);
-			preparedStatement.setInt(2, offset);
+		try (PreparedStatement preparedStatement = this.connection
+				.prepareStatement(DatabaseQueries.GET_BOOKS_PAGINATED)) {
+
+			if (categoria == null) {
+				categoria = "TI";
+			}
+			preparedStatement.setString(1, categoria);
+			preparedStatement.setInt(2, limit);
+			preparedStatement.setInt(3, offset);
+
 			ResultSet rs = preparedStatement.executeQuery();
+
+			System.out.println(preparedStatement);
 
 			while (rs.next()) {
 				int id = rs.getInt("id");
@@ -185,7 +206,8 @@ public class BookDAO {
 				int paginas = rs.getInt("nmrPaginas");
 				Long isbn = rs.getLong("isbn");
 				String capa = rs.getString("capa");
-				books.add(new Book(id, nome, autor, paginas, isbn, capa));
+				String categoria_select = rs.getString("categoria");
+				books.add(new Book(id, nome, autor, paginas, isbn, capa, categoria_select));
 			}
 		} catch (SQLException e) {
 			printSQLException(e);
@@ -195,10 +217,14 @@ public class BookDAO {
 	}
 
 	// Método para contar o número total de registros
-	public int getTotalRecords() {
+	public int getTotalRecords(String categoria) {
 		int totalRecords = 0;
 
-		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.GET_TOTAL_RECORDS)) {
+		try (PreparedStatement preparedStatement = this.connection
+				.prepareStatement(DatabaseQueries.GET_TOTAL_RECORDS)) {
+
+			preparedStatement.setString(1, categoria);
+
 			ResultSet rs = preparedStatement.executeQuery();
 			if (rs.next()) {
 				totalRecords = rs.getInt("count");

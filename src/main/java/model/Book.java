@@ -9,21 +9,23 @@ public class Book {
 	public Long isbn;
 	public boolean isDeleted;
 	public String capa;
+	public String categoria;
 
 
 	public Book() {
 	}
 
-	public Book(String nome, String autor, int nmr_paginas, Long isbn, String capa) {
+	public Book(String nome, String autor, int nmr_paginas, Long isbn, String capa, String categoria) {
 		super();
 		this.nome = nome;
 		this.autor = autor;
 		this.nmrPaginas = nmr_paginas;
 		this.isbn = isbn;
 		this.capa = capa;
+		this.categoria = categoria;
 	}
 	
-	public Book(int id, String nome, String autor, int nmr_paginas, Long isbn, String capa) {
+	public Book(int id, String nome, String autor, int nmr_paginas, Long isbn, String capa, String categoria) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -31,6 +33,17 @@ public class Book {
 		this.nmrPaginas = nmr_paginas;
 		this.isbn = isbn;
 		this.capa = capa;
+		this.categoria = categoria;
+	}
+	
+	
+
+	public String getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(String categoria) {
+		this.categoria = categoria;
 	}
 
 	public int getId() {
