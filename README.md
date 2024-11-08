@@ -96,6 +96,20 @@ public class DatabaseQueries {
 
 **Switch no método doGet:** Essa prática ajuda no redirecionamente dos métodos que são responsáveis por manipular cada path.
 ```
+	@WebServlet("/")
+	public class BookServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+	private BookDAO bookDAO;
+
+	public void init() {
+		bookDAO = new BookDAO();
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String action = request.getServletPath();
@@ -128,9 +142,10 @@ public class DatabaseQueries {
 			throw new ServletException(ex);
 		}
 	}
+
 ```
 
-**Mecanismo de FeedBack utilizando HttpSession:** ese mecanismo foi inserido em todas as etapas no CRUD, exceto Read.
+**Mecanismo de FeedBack utilizando HttpSession:** esse mecanismo foi inserido em todas as etapas no CRUD, exceto Read.
 ```
 JAVA
 	private void insertBook(HttpServletRequest request, HttpServletResponse response) throws SQLException, IOException {
@@ -168,6 +183,97 @@ JSP
 		<div id="errorMessage" class="alert alert-danger">${sessionScope.error}</div>
 		<c:remove var="error" scope="session" />
 	</c:if>
+
+```
+
+**Mecanismo de paginação:** Limita a 5 elemento por página.
+```
+JAVA - Servlet
+		private void listBook(HttpServletRequest request, HttpServletResponse response)
+			throws SQLException, IOException, ServletException {
+		int page = 1;
+		int recordsPerPage = 5;
+
+		if (request.getParameter("page") != null) {
+			page = Integer.parseInt(request.getParameter("page"));
+		}
+
+		int offset = (page - 1) * recordsPerPage;
+		List<Book> listBook = bookDAO.selectBooksPaginated(offset, recordsPerPage);
+		int noOfRecords = bookDAO.getTotalRecords();
+		int noOfPages = (int) Math.ceil(noOfRecords * 1.0 / recordsPerPage);
+
+		request.setAttribute("listBook", listBook);
+		request.setAttribute("noOfPages", noOfPages);
+		request.setAttribute("currentPage", page);
+
+		RequestDispatcher dispatcher = request.getRequestDispatcher("book-list.jsp");
+		dispatcher.forward(request, response);
+	}
+
+JAVA - DAO
+
+	// Método para buscar livros paginados
+	public List<Book> selectBooksPaginated(int offset, int limit) {
+		List<Book> books = new ArrayList<>();
+
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.GET_BOOKS_PAGINATED)) {
+			preparedStatement.setInt(1, limit);
+			preparedStatement.setInt(2, offset);
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				int id = rs.getInt("id");
+				String nome = rs.getString("nome");
+				String autor = rs.getString("autor");
+				int paginas = rs.getInt("nmrPaginas");
+				Long isbn = rs.getLong("isbn");
+				String capa = rs.getString("capa");
+				books.add(new Book(id, nome, autor, paginas, isbn, capa));
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+
+		return books;
+	}
+
+	// Método para contar o número total de registros
+	public int getTotalRecords() {
+		int totalRecords = 0;
+
+		try (PreparedStatement preparedStatement = this.connection.prepareStatement(DatabaseQueries.GET_TOTAL_RECORDS)) {
+			ResultSet rs = preparedStatement.executeQuery();
+			if (rs.next()) {
+				totalRecords = rs.getInt("count");
+			}
+		} catch (SQLException e) {
+			printSQLException(e);
+		}
+
+		return totalRecords;
+	}
+
+JSP
+
+		<nav aria-label="Page navigation">
+			<ul class="pagination">
+				<c:if test="${currentPage > 1}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${currentPage - 1}">Anterior</a></li>
+				</c:if>
+
+				<c:forEach var="i" begin="1" end="${noOfPages}">
+					<li class="page-item ${i == currentPage ? 'active' : ''}"><a
+						class="page-link" href="?page=${i}">${i}</a></li>
+				</c:forEach>
+
+				<c:if test="${currentPage < noOfPages}">
+					<li class="page-item"><a class="page-link"
+						href="?page=${currentPage + 1}">Próxima</a></li>
+				</c:if>
+			</ul>
+		</nav>
 
 ```
 
