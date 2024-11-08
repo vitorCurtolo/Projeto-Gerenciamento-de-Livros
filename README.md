@@ -277,6 +277,21 @@ JSP
 
 ```
 
+**Tabela Livros:** Construção da tabela Livros
+```
+create table livros (
+	id  int NOT NULL AUTO_INCREMENT,
+	nome varchar(250) NOT NULL,
+	autor varchar(250) NOT NULL,
+	nmrPaginas int,
+	isbn long,
+    	isDeleted boolean default true,
+    	capa varchar(550),
+	PRIMARY KEY (id)
+);
+
+```
+
 ### 6. Considerações Finais
 O sistema de gerenciamento de livros apresenta uma solução eficaz para o controle do acervo de uma biblioteca. Futuras melhorias podem incluir a implementação de um sistema de empréstimo, a integração com outros sistemas e a geração de relatórios personalizados.
 Agradecimentos: Agradecemos a toda a equipe de desenvolvimento pela dedicação e profissionalismo.
